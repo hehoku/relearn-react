@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
 
+import CommentApp from './components/commentApp'
+
 const toLearn = ['React', 'Redux', 'Electron']
 class App extends Component {
   static defaultProps = {
@@ -33,8 +35,6 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
-          <p>Need To Learn:</p>
-          {toLearn.map(item => <dl key={item}>{item}</dl>)}
           <a
             className="App-link"
             href="https://reactjs.org"
@@ -48,6 +48,7 @@ class App extends Component {
               <span>morning</span>
             )}
           </a>
+          <CommentApp />
         </header>
       </div>
     )
