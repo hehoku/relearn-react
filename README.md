@@ -71,3 +71,49 @@ props 是组件的属性，让组件可以配置，在其他的地方使用。�
 ### 渲染列表数据
 如果在 {} 中放入一个数组，React 会帮你把数组里面的元素一个个罗列出来。
 所以可以使用 map 渲染数据列表。使用时需要添加一个 key，为元素的唯一标识符。
+
+### 状态提升
+将这种组件之间共享的状态交给组件最近的公共父节点保管，这种方式称为状态提升。
+
+当某个状态被多个组件依赖或者影响的时候，就把该状态提升到这些组件的最近公共父组件中去管理，用 props 传递数据或者函数来管理这种依赖或着影响的行为。
+
+### 生命周期
+React.js 将组件渲染，并且构造 DOM 元素然后塞入页面的过程称为组件的挂载
+
+**React 挂载阶段的生命周期：**
+-> constructor()
+-> componentWillMount()
+-> render()
+// 然后构造 DOM 元素插入页面
+-> componentDidMount()
+// ...
+// 即将从页面中删除
+-> componentWillUnmount()
+// 从页面中删除
+
+state 的初始化工作放在 constructor 里面，在 componentWillMount 里面进行组件的启动工作，如发起网络请求，设置定时器，组件销毁的时候需要将定时器清理掉，在 componentWillUnmount 里面处理。
+
+依赖于 DOM 的工作需要放在 componentDidMount 中里面进行。
+
+**更新阶段的生命周期**
+shouldComponentUpdate(nextProps, nextState) 如果返回 false 不更新
+componentWillReceiveProps(nextProps) 组件从父组件接收到新的 props 前调用
+componentWillUpdate()：组件开始重新渲染之前调用。
+componentDidUpdate()：组件重新渲染并且把更改变更到真实的 DOM 以后调用。
+
+### ref 和 React 中的 DOM 操作
+在 React 中基本上不需要和 DOM 直接打交道，但又几种情况需要使用 DOM，如：进入页面后自动聚焦，需要使用 `input.focus()`，如果想动态获取 DOM 元素的尺寸
+
+React 提供了 ref 属性来帮我们获取已挂载元素的 DOM 结点，可以给某个 jsx 元素加上 ref 属性。
+ref 属性是一个函数，在函数中可以把 DOM 元素设置为组件实例的一个属性，之后就可以获取 DOM 元素。
+组件也可以使用 ref，但不推荐这么做
+```js
+<input ref={(input) => this.input = input} />
+this.input.focus()
+```
+
+### props.children 和容器类组件
+使用自定义组件时，所有嵌套在组件中的 jsx 结构都可以通过组件的 props.children 属性获得。
+
+### propTypes 和组件参数验证
+在使用 React 构建大型应用时，推荐使用 propTypes 构建，可以给组件的配置添加上类型验证，如果传入的类型不对，浏览器会报错，使用 js 编写不会报错，如果使用 TypeScript 会报错。

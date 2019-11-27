@@ -4,7 +4,6 @@ import './App.css'
 
 import CommentApp from './components/commentApp'
 
-const toLearn = ['React', 'Redux', 'Electron']
 class App extends Component {
   static defaultProps = {
     name: 'Hehoku Studio'
