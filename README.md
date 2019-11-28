@@ -77,6 +77,11 @@ props 是组件的属性，让组件可以配置，在其他的地方使用。�
 
 当某个状态被多个组件依赖或者影响的时候，就把该状态提升到这些组件的最近公共父组件中去管理，用 props 传递数据或者函数来管理这种依赖或着影响的行为。
 
+使用 props 传递函数的例子：
+App handleDelete(index)
+   List<Comment> onDeleteComment(index) handleDeleteComment
+      Comment onClick={this.handleClick.bind(this)} handleDelete
+
 ### 生命周期
 React.js 将组件渲染，并且构造 DOM 元素然后塞入页面的过程称为组件的挂载
 
@@ -117,3 +122,16 @@ this.input.focus()
 
 ### propTypes 和组件参数验证
 在使用 React 构建大型应用时，推荐使用 propTypes 构建，可以给组件的配置添加上类型验证，如果传入的类型不对，浏览器会报错，使用 js 编写不会报错，如果使用 TypeScript 会报错。
+
+### 命名建议
+组件的私有方法使用 `_` 开头，所有的监听方法使用 `handle` 开头，把监听方法传递给组件的时候，属性名用 `on`。
+
+组件的编写顺序：
+- static 开头的类属性，如 defaultProps、propTypes。
+- 构造函数，constructor。
+- getter/setter（还不了解的同学可以暂时忽略）。
+- 组件生命周期。
+- _ 开头的私有方法。
+- 事件监听方法，handle*。
+- render*开头的方法，有时候 render() 方法里面的内容会分开到不同函数里面进行，这些函数都以 render* 开头。
+- render() 方法。

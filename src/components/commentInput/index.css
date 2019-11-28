@@ -1,0 +1,6 @@
+lable, button {
+  display: block;
+}
+button, input {
+  margin: 10px auto;
+}
