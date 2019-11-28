@@ -1,4 +1,5 @@
 ## 重学 React
+[参考资料: Reac.js 小书 by 胡子大哈](http://huziketang.mangojuice.top/books/react/)
 组件化可以帮助我们解决前端结构的复用性问题，整个页面可以由这样的不同的组件组合、嵌套构成。
 
 ### 01 使用 React
@@ -135,3 +136,61 @@ this.input.focus()
 - 事件监听方法，handle*。
 - render*开头的方法，有时候 render() 方法里面的内容会分开到不同函数里面进行，这些函数都以 render* 开头。
 - render() 方法。
+
+### 高阶组件
+高阶组件就是一个函数，传给它一个组件，它返回一个新的组件。高阶组件就是为了代码复用，组件可能存在着某些相同的逻辑，把这些逻辑抽离出来，放到高阶组件中复用，高阶组件内部的包装组件和被包装组件之间通过 props 传递数据。
+
+就是设计模式中的装饰者模式，通过组合的方法达到很高的灵活程度。
+
+### Context
+Context 相当于组件树上的某颗子树的全局变量。context 至少能往下传递，不能往上传递。
+
+使用 context 时，需要在组件中声明 `childContextTypes`，设置 context 的类型，然后使用 `getChildContext` 获取返回的对象。然后在组件中使用 `this.context.some` 使用
+
+context 中的数据是可以随意修改的
+
+### Redux 的原理
+Redux 与 React-redux 并不是一个东西。Redux 是一种架构模式，不关注使用什么库，可以应用到 React Vue，甚至是 jQuery。
+
+为什么需要 Redux？模块/组件之间需要共享数据，但是数据可能被任意修改导致不可预料的结果。
+
+设置一条规则：模块组件之间可以共享数据，也可以更改数据，但是要提前月订，这个数据不能直接修改，只能执行某些允许的修改，而且必须显式的通知调用修改。
+
+为此，Redux 中有 `dispatch` 负责数据的修改。
+```js
+function dispatch (action) {
+  switch (action.type) {
+    case 'UPDATE_TITLE_TEXT':
+      appState.title.text = action.text
+      break
+    case 'UPDATE_TITLE_COLOR':
+      appState.title.color = action.color
+      break
+    default:
+      break
+  }
+}
+```
+所有的数据操作必须通过 dispatch 函数，接收一个参数 action，这个 action 是一个普通的 js 对象，里面必须包含一个 type 字段来声明目的，dispatch 在 switch 里面会识别这个 type 字段，能够识别出来的操作才能执行 state 的更改。action 中除了 type 字段是必须的之外，其他的字段都是可以自定义的。
+
+store：
+   getState 获取 state
+   dispatch 发起更改 state 的通知调用，reducer 来更改 state
+
+### Provider
+使用高阶组件，将 context 与 pure component 连接起来， 在高阶组件中再将 context 与 redux 连接起来，然后使用一个 mapStateToProps 的方法，将 state 传递给 pure component，同时也可以使用 mapDispatchToProps 传递给 props 给 pure component.
+
+Provider 是一个容器组件，将嵌套的内容原封不动的作为自己的子组件。将外界传递给它的 props.state 放到 context 中，这样子组件就可以使用。
+
+### pure component vs container component
+pure component 可预测性强，对 props 以外的数据零依赖，也不会产生副作用。尽量使用 pure component 提高组件的可复用性。
+
+container component 专门做数据相关的应用逻辑，和各种数据打交道，然后把数据通过 props 传递给 pure component。
+
+container componetn 组件可以包含 pure component 和 container component，但是 pure component 尽量不要依赖 container component
+
+最好将组件放在两个目录中，所有的 pure component 放在 components 目录中，所有的 container component 组件放在 containers 目录中。
+
+根据组件是否需要高度复用的，把组件分为 pure 和 container 组件两种类型
+
+container 组件并不意味着完全不能复用，它的复用是依赖场景的，在特定的场景下是可以复用的。而 pure component 是可以跨应用场景复用的。
